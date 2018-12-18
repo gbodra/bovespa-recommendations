@@ -63,8 +63,8 @@ dataset_2017 = dataset_2017[:-1]
 dataset_2018.drop([0], inplace=True)
 dataset_2018 = dataset_2018[:-1]
 
-#frames = [dataset_2010, dataset_2011, dataset_2012, dataset_2013, dataset_2014, dataset_2015, dataset_2016, dataset_2017, dataset_2018]
-frames = [dataset_2015, dataset_2016, dataset_2017, dataset_2018]
+frames = [dataset_2010, dataset_2011, dataset_2012, dataset_2013, dataset_2014, dataset_2015, dataset_2016, dataset_2017, dataset_2018]
+#frames = [dataset_2015, dataset_2016, dataset_2017, dataset_2018]
 data_frame = pd.concat(frames)
 
 #Otimizando o uso de memoria
@@ -87,24 +87,7 @@ Y = data_frame.values[:,3]
 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size = 0.3,
                                                     random_state = 100)
 
-rgr = DecisionTreeRegressor()
-rgr.fit(X_train, y_train)
-
-y_pred = rgr.predict(X_test)
-
-print("DRT accuracy is ", explained_variance_score(y_test,y_pred)*100)
-
-#2018-12-14 -> 482 / PETR4 -> 46229
-X_test_2 = [[482, 46229, 2308]]
-y_pred_2 = rgr.predict(X_test_2)
-print(y_pred_2)
-
-X_test_3 = [[481, 46229, 2329]]
-y_pred_3 = rgr.predict(X_test_3)
-print(y_pred_3)
-
-#-------------KNN------------
-rgr_knn = KNeighborsRegressor()
+rgr_knn = KNeighborsRegressor(n_neighbors=6, weights='distance')
 rgr_knn.fit(X_train, y_train)
 y_pred_knn = rgr_knn.predict(X_test)
 print("KRR accuracy is ", explained_variance_score(y_test,y_pred_knn)*100)
